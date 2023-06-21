@@ -1,3 +1,5 @@
+<svelte:options accessors />
+
 <script>   
     export let TYPE = "text";
     export let PLACEHOLDER = "placeholder";

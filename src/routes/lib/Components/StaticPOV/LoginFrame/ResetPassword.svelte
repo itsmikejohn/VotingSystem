@@ -7,7 +7,7 @@
 
 </script>
 
-<main >
+<main in:scale>
     <p class="text-2xl text-center font-bold p-10">Voting System</p>
     
     <div class="p-8 bg-slate-200 rounded-lg" in:fly={{y:-200, duration:1000}}>
