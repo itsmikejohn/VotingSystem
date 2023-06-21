@@ -6,19 +6,26 @@
     import ResetPassword from "./ResetPassword.svelte";
 
     import OurAccordion from "../../../GeneralComponents/OurAccordion.svelte";
+
+    //has user
+    import Nav from "../StaticBound/Nav.svelte";
     
 
 </script>
 
 <main class="mx-auto sm:max-w-2xl mt-[10vh] px-5">
-    
-    {#if $logicGates.showRegisterComp}
-        <Register />
-    {:else if $logicGates.showResetPassword}
-        <ResetPassword />
-    {:else}
-        <Login />
+
+    {#if false}
+        {#if $logicGates.showRegisterComp}
+            <Register />
+        {:else if $logicGates.showResetPassword}
+            <ResetPassword />
+        {:else}
+            <Login />
+        {/if}
     {/if}
+
+    <Nav />
     
 </main>
 
