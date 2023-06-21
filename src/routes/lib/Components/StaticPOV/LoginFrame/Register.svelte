@@ -12,7 +12,7 @@
     
     <div class="p-8 bg-slate-200 rounded-lg" in:fly={{y:200, duration:1000}}>
         <p class="text-2xl text-center font-bold">Voter's Registration</p>
-        <div class="">
+        <div class="mt-5">
             <OurAccordion />
             <OurInputs LABEL="Username:" PLACEHOLDER="Username" />
             <OurInputs TYPE="email" LABEL="Email:" PLACEHOLDER="Voters Email"/>
