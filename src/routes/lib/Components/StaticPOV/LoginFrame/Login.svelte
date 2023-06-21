@@ -47,7 +47,7 @@
         </div>
 
         <div class="max-w-fit mt-2">
-            <OurButton TITLE="Sign in" on:click={login}/>
+            <OurButton TITLE="Sign in" on:click={login} LOGIC={$logicGates.showLoading} LOGIC_TITLE="Signing.."/>
         </div>
     </div>
 
