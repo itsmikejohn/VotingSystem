@@ -7,8 +7,6 @@
 
     import OurAccordion from "../../../GeneralComponents/OurAccordion.svelte";
 
-    //has user
-    import Nav from "../StaticBound/Nav.svelte";
     
 
 </script>
@@ -25,7 +23,6 @@
         {/if}
     {/if}
 
-    <Nav />
     
 </main>
 

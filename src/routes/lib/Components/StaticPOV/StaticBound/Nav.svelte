@@ -1,7 +1,69 @@
 <script>
+    import { fly } from "svelte/transition";
 
+    let logicSwitch = false;
+    let display = "block";
+    let firstDiv = "rotate-[0deg] relative";
+    let secDiv = "rotate-[0deg]";
+    let padding = "p-2";
+
+
+    const showData = () => {
+        logicSwitch = !logicSwitch;
+        if(logicSwitch){
+            display = "hidden";
+            firstDiv = "rotate-[45deg] absolute";
+            secDiv = "rotate-[-45deg]";
+            padding = "px-2 py-3.5";
+        }else{
+            display = "block";
+            firstDiv = "rotate-[0deg] relative";
+            secDiv = "rotate-[0deg]";
+            padding = "p-2";
+        }
+    }
 </script>
 
-<nav>
-    klaslkdaslkgaklsdj
+<nav class="bg-[#3c8db9] p-2 fixed top-0 w-full">
+    <button class="flex flex-col gap-1 {padding} bg-white rounded-full"
+    on:click={showData}
+    >
+        <div class="w-4 border-b-2 border-black transition-all {firstDiv}"></div>
+        <div class="w-4 border-b-2 border-black transition-all {display}"></div>
+        <div class="w-4 border-b-2 border-black transition-all {secDiv}"></div>
+    </button>
+    
+    {#if logicSwitch}
+        <div class="fixed bg-[#3c8db9] mt-2 left-0" transition:fly={{x:-100, duration:200}}>
+            <div class="flex gap-2 items-center text-white p-4">
+                <img src="https://em-content.zobj.net/thumbs/120/facebook/65/man_1f468.png" alt="loading" class="w-16 bg-slate-200 rounded-full" />
+                <div class="flex flex-col gap-2">
+                    <p>Peter Pan Magic</p>
+                    <div class="flex gap-2 items-center">
+                        <div class="w-4 h-4 bg-green-700 rounded-full"></div><p>Online</p>
+                    </div>
+                </div>
+            </div>
+
+            <p class="bg-[#1c1c1c] text-white px-4">REPORTS</p>
+            <div class="">
+                <p class="p-2 cursor-pointer hover:bg-slate-600 transition-all hover:scale-95">Dashboard</p>
+                <p class="p-2 cursor-pointer hover:bg-slate-600 transition-all hover:scale-95">Votes</p>
+            </div>
+
+            <p class="bg-[#1c1c1c] text-white px-4">MANAGE</p>
+            <div class="">
+                <p class="p-2 cursor-pointer hover:bg-slate-600 transition-all hover:scale-95">Voters</p>
+                <p class="p-2 cursor-pointer hover:bg-slate-600 transition-all hover:scale-95">Positions</p>
+                <p class="p-2 cursor-pointer hover:bg-slate-600 transition-all hover:scale-95">Candidates</p>
+            </div>
+
+            <p class="bg-[#1c1c1c] text-white px-4">SETTINGS</p>
+            <div class="">
+                <p class="p-2 cursor-pointer hover:bg-slate-600 transition-all hover:scale-95">Ballot Position</p>
+                <p class="p-2 cursor-pointer hover:bg-slate-600 transition-all hover:scale-95">Election Title</p>
+            </div>
+        </div>
+    {/if}
 </nav>
+
