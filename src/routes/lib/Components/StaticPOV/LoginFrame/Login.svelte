@@ -32,6 +32,7 @@
         })
         .catch(error => {
             thisCompoVars.dbDomReader = error.code;
+            $logicGates.showLoading = false;
         })
     }
 </script>
