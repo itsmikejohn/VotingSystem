@@ -30,6 +30,20 @@
         }).then(() => $userStates.showNewPosition = false)
     }
 
+    //edit positon from DB
+    const editPosition = refID => {
+        setDoc(doc(collection(db, "addedPositions"), refID), {
+            description: $universalVars.description.BINDTHIS,
+            maximumVote: $universalVars.maximumVote.BINDTHIS,
+            modedAt: serverTimestamp(),
+        }, {merge:true}).then(() => $userStates.comparisonPos = 0.1)
+    }
+
+    //delete position from DB
+    const deletePosition = refID => {
+        deleteDoc(doc(collection(db, "addedPositions"), refID))
+    }
+
 </script>
 
 
@@ -81,19 +95,47 @@
                 {#each $userStates.addedPositionsArray as val, index}
                 <div class="flex flex-col gap-2 bg-slate-300 p-4 rounded-lg sm:flex-row sm:items-center sm:p-0 ">
                     <p class=" px-2 bg-slate-200 font-semibold">Description</p>
-                    <p class="w-[30%]">{val.description}</p>
-                    <p class=" px-2 w-[18%] bg-slate-200 font-semibold">Maximum Votes</p>
-                    <p class="w-[70%]">{val.maximumVote}</p>
+                    <p class="sm:w-[30%]">{val.description}</p>
+                    <p class=" px-2 sm:w-[18%] bg-slate-200 font-semibold">Maximum Votes</p>
+                    <p class="sm:w-[70%]">{val.maximumVote}</p>
                     <p class=" px-2 bg-slate-200 font-semibold">Tools</p>
                     <div class="flex gap-2">
                         <button class="bg-green-600 px-2 text-white font-semibold hover:bg-green-800"
                         on:click={() => $userStates.comparisonPos = index}
                         >Edit</button>
                         <button class="bg-red-600 px-2 text-white font-semibold hover:bg-red-800"
-                        on:click={() => {}}
+                        on:click={() => {deletePosition(val.id)}}
                         >Delete</button>
                     </div>
                 </div>
+
+                {#if $userStates.comparisonPos === index}
+                    <div class="fixed top-0 bottom-0 left-0 right-0 p-4" in:scale>
+                        <div class="border-2 mx-auto max-w-2xl mt-[15vh] p-4 z-10 rounded-lg bg-orange-400">
+                            <p class="text-white font-semibold">Update target: <i class="text-black">{val.description}</i></p>
+                            
+                            <OurInputs LABEL="Description:" PLACEHOLDER="Description example.. President" bind:this={$universalVars.description}/>
+                            <OurInputs TYPE="number" LABEL="Maximum Votes:" PLACEHOLDER="Enter a valid number of votes" bind:this={$universalVars.maximumVote}/>
+                            
+                            <div class="flex mt-4 border-t-2 pt-2">
+                                <div class="w-full">
+                                    <div class="max-w-fit">
+                                        <OurButton TITLE="Cancel" on:click={() => $userStates.comparisonPos = 0.1}/>
+                                    </div>
+                                </div>
+                                
+                                <div class="w-full">
+                                    <div class="max-w-fit float-right">
+                                        <OurButton TITLE="Save" on:click={() => editPosition(val.id)}/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {/if}
+
+
+
                 {/each}
             </div>
         </div>
