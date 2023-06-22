@@ -1,9 +1,9 @@
 <script>
     import MainFrame from "./lib/Components/StaticPOV/LoginFrame/MainFrame.svelte";
-    import Nav from "./lib/Components/StaticPOV/StaticBound/Nav.svelte";
+    import UserMainFrame from "./lib/Components/UserPOV/UserMainFrame.svelte";
 </script>
 
 <main>
-    <Nav />
+    <UserMainFrame />
     <MainFrame />
 </main>

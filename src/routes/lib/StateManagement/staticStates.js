@@ -5,13 +5,17 @@ export const logicGates = writable({
     showResetPassword: false,
 
     showLoading: false,
+    
 })
 
 export const universalVars = writable({
     gender: "",
-    username: "",
+    fullname: "",
     email: "",
     password: "",
     confirmPassword: "",
 
+    activeItem: "Dashboard",
+
 })
+
