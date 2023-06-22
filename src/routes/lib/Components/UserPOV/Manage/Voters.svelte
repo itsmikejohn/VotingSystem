@@ -11,9 +11,11 @@
     //database calls and hooks
     import { auth, db } from "../../../DB/firebase";
     import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
-    import { doc, collection, setDoc, serverTimestamp, onSnapshot} from "firebase/firestore"
+    import { doc, collection, setDoc, serverTimestamp, onSnapshot, addDoc, deleteDoc, query, orderBy} from "firebase/firestore"
 
-    onSnapshot(collection(db, "addedVoters"), snapshots => {
+    
+    
+    onSnapshot(query(collection(db, "addedVoters"), orderBy("createdAt", "asc")), snapshots => {
         let fbData = [];
         snapshots.docs.forEach(doc => {
             let data = {...doc.data(), id: doc.id};
@@ -24,46 +26,64 @@
         
     })
 
+    //delete voter
+    const deleteVoter = refID => {
+        deleteDoc(doc(collection(db, "addedVoters"), refID))
+    }
+
+    //modifify voter
+    const editVoter = refID => {
+        let photoURL = "";
+        if($universalVars.gender === "Male"){
+            photoURL = "https://em-content.zobj.net/thumbs/120/facebook/65/man_1f468.png";
+        }else{
+            photoURL = "https://em-content.zobj.net/thumbs/120/facebook/65/woman_1f469.png";
+        }
+        setDoc(doc(collection(db, "addedVoters"), refID), {
+            fullname: $universalVars.fullname.BINDTHIS,
+            password: $universalVars.password.BINDTHIS,
+            gender: $universalVars.gender,
+            photoURL: photoURL,
+            modedAt: serverTimestamp(),
+        }, {merge:true}).then(() => $userStates.comparison = 0.1)
+    }
     
-    
+    //add voter
     const addVoter = () => {
-        createUserWithEmailAndPassword(auth, $universalVars.email.BINDTHIS, $universalVars.password.BINDTHIS)
-        .then(userCred => {
+        let photoURL = "";
 
-            if($universalVars.gender === "Male"){
-                updateProfile(userCred.user, {
-                    displayName: $universalVars.fullname,
-                    photoURL: "https://em-content.zobj.net/thumbs/120/facebook/65/man_1f468.png"
-                })
-            }else if($universalVars.gender === "Female"){
-                updateProfile(userCred.user, {
-                    displayName: $universalVars.fullname,
-                    photoURL: "https://em-content.zobj.net/thumbs/120/facebook/65/woman_1f469.png",
-                })
-            }else{
-                updateProfile(userCred.user, {
-                    displayName: $universalVars.fullname,
-                    photoURL: "https://em-content.zobj.net/thumbs/120/facebook/65/woman_1f469.png",
-                })
-            }
+        if($universalVars.gender === "Male"){
+            photoURL = "https://em-content.zobj.net/thumbs/120/facebook/65/man_1f468.png";
+        }else{
+            photoURL = "https://em-content.zobj.net/thumbs/120/facebook/65/woman_1f469.png";
+        }
 
-            setDoc(doc(collection(db, "addedVoters"), userCred.user.uid), {
-                fullname: $universalVars.fullname.BINDTHIS,
-                email: $universalVars.email.BINDTHIS,
-                password: $universalVars.password.BINDTHIS,
-                createdAt: serverTimestamp(),
-
-            }, {merge:true})
-            .then(() => $userStates.showNewVoter = false)
-        })
-        .catch(error => {
-            console.log(error)
-        })
+        addDoc(collection(db, "addedVoters"), {
+            fullname: $universalVars.fullname.BINDTHIS,
+            password: $universalVars.password.BINDTHIS,
+            gender: $universalVars.gender,
+            photoURL: photoURL,
+            generatedUID: generatreUID(),
+            createdAt: serverTimestamp(),
+        }).then(() => $userStates.showNewVoter = false)
     }
 
 
     const newVoter = () => {
         $userStates.showNewVoter = true;
+    }
+
+
+    const generatreUID = () => {
+        let uid ="";
+        const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+        for (let i = 0; i < 6; i++) {
+            let randomIndex = Math.floor(Math.random() * chars.length);
+            uid += chars.charAt(randomIndex);
+        }
+
+        return uid;
     }
 </script>
 
@@ -84,7 +104,6 @@
                                 <OurAccordion />
                             </div>
                             <OurInputs LABEL="Fullname:" PLACEHOLDER="Voter Fullname" bind:this={$universalVars.fullname}/>
-                            <OurInputs TYPE="email" LABEL="Email:" PLACEHOLDER="Voter Email" bind:this={$universalVars.email}/>
                             <OurInputs TYPE="password" LABEL="Password:" PLACEHOLDER="Voter Password" bind:this={$universalVars.password}/>
                             
                             <div class="flex mt-4 border-t-2 pt-2">
@@ -104,8 +123,7 @@
                     </div>
                 {/if}
 
-
-
+    
 
 
                 </div>
@@ -118,12 +136,55 @@
                 </div>
             </div>
             
-            <div class="flex gap-2">
-                <p class="w-full border-2 p-2 font-semibold">Lastname</p>
-                <p class="w-full border-2 p-2 font-semibold">Firstname</p>
-                <p class="w-full border-2 p-2 font-semibold">Photo</p>
-                <p class="w-full border-2 p-2 font-semibold">Voters ID</p>
-                <p class="w-full border-2 p-2 font-semibold">Tools</p>
+            <div class="flex flex-col gap-2">
+                {#each $userStates.addedVotersArray as val, index}
+                    <div class="flex gap-2 items-center">
+                        <p class=" px-2 bg-slate-200 font-semibold">Fullname</p>
+                        <p>{val.fullname}</p>
+                        <p class=" px-2 bg-slate-200 font-semibold">Gender</p>
+                        <p>{val.gender}</p>
+                        <p class=" px-2 bg-slate-200 font-semibold">Photo</p>
+                        <img src={val.photoURL} alt="loading" class="w-10"/>
+                        <p class=" px-2 bg-slate-200 font-semibold">Voters ID</p>
+                        <p>{val.generatedUID}</p>
+                        <p class=" px-2 bg-slate-200 font-semibold">Tools</p>
+                        <div class="flex gap-2">
+                            <button class="bg-green-600 px-2 text-white font-semibold hover:bg-green-800"
+                            on:click={() => $userStates.comparison = index}
+                            >Edit</button>
+                            <button class="bg-red-600 px-2 text-white font-semibold hover:bg-red-800"
+                            on:click={() => deleteVoter(val.id)}
+                            >Delete</button>
+                        </div>
+                    </div>
+
+                    {#if $userStates.comparison === index}
+                    <div class="fixed top-0 bottom-0 left-0 right-0 p-4" in:scale>
+                        <div class="border-2 mx-auto max-w-2xl mt-[15vh] p-4 z-10 rounded-lg bg-orange-400">
+                            <p class="text-white font-semibold">Update target: <i class="text-black">{val.fullname}</i></p>
+                            <div class="mt-2">
+                                <OurAccordion />
+                            </div>
+                            <OurInputs LABEL="Update Fullname:" PLACEHOLDER="Update Voter Fullname" bind:this={$universalVars.fullname}/>
+                            <OurInputs TYPE="password" LABEL="Update Password:" PLACEHOLDER="Update Voter Password" bind:this={$universalVars.password}/>
+                            
+                            <div class="flex mt-4 border-t-2 pt-2">
+                                <div class="w-full">
+                                    <div class="max-w-fit">
+                                        <OurButton TITLE="Cancel" on:click={() => $userStates.comparison = 0.1}/>
+                                    </div>
+                                </div>
+                                
+                                <div class="w-full">
+                                    <div class="max-w-fit float-right">
+                                        <OurButton TITLE="Save" on:click={() => editVoter(val.id)}/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {/if}
+                {/each}
             </div>
 
             <div class="">
