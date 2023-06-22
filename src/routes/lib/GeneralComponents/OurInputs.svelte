@@ -22,6 +22,13 @@
         bind:value={BINDTHIS}
         />
     </label>
+{:else if TYPE === "number"}
+    <label>
+        <p class="py-2 font-semibold">{LABEL}</p>
+        <input type="number" placeholder={PLACEHOLDER} class="w-full px-2 py-1 focus:outline-none border-2"
+        bind:value={BINDTHIS}
+        />
+    </label>
 {:else if TYPE === "password"}
     <label>
         <p class="py-2 font-semibold">{LABEL}</p>

@@ -64,9 +64,11 @@
                 <p class="bg-[#1c1c1c] text-white px-4">REPORTS</p>
                 <div class="">
                     <button class="p-2 w-full text-left cursor-pointer hover:bg-slate-600 transition-all hover:scale-95"
+                    class:active={$universalVars.activeItem === "Dashboard"}
                     on:click={() => collectData(event)}
                     >Dashboard</button>
                     <button class="p-2 w-full text-left cursor-pointer hover:bg-slate-600 transition-all hover:scale-95"
+                    class:active={$universalVars.activeItem === "Votes"}
                     on:click={() => collectData(event)}
                     >Votes</button>
                 </div>
@@ -74,12 +76,15 @@
                 <p class="bg-[#1c1c1c] text-white px-4">MANAGE</p>
                 <div class="">
                     <button class="p-2 w-full text-left cursor-pointer hover:bg-slate-600 transition-all hover:scale-95"
+                    class:active={$universalVars.activeItem === "Voters"}
                     on:click={() => collectData(event)}
                     >Voters</button>
                     <button class="p-2 w-full text-left cursor-pointer hover:bg-slate-600 transition-all hover:scale-95"
+                    class:active={$universalVars.activeItem === "Positions"}
                     on:click={() => collectData(event)}
                     >Positions</button>
                     <button class="p-2 w-full text-left cursor-pointer hover:bg-slate-600 transition-all hover:scale-95"
+                    class:active={$universalVars.activeItem === "Candidates"}
                     on:click={() => collectData(event)}
                     >Candidates</button>
                 </div>
@@ -99,3 +104,8 @@
 </nav>
 
 
+<style>
+    .active{
+        background-color: grey;
+    }
+</style>

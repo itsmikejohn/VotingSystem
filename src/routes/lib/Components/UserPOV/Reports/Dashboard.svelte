@@ -4,7 +4,7 @@
 
 </script>
 
-<main class="p-4 " in:fly={{x:-200, duration:600}}>
+<main class="p-4 sm:max-w-7xl mx-auto" in:fly={{x:-200, duration:600}}>
     <p class="text-2xl font-semibold py-4">Dashboard</p>
     <div class="flex flex-col gap-4 sm:flex-row ">
         <div class="">

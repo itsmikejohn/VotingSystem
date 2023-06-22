@@ -5,5 +5,9 @@ export const userStates = writable({
     showEditVoter: false,
     comparison: 0.1,
 
+    showNewPosition: false,
+    showEditPosition: false,
+    comparisonPos: 0.1,
+
     addedVotersArray: [],
 })
