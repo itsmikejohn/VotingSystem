@@ -10,4 +10,5 @@ export const userStates = writable({
     comparisonPos: 0.1,
 
     addedVotersArray: [],
+    addedPositionsArray: [],
 })

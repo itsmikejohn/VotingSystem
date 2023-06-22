@@ -15,6 +15,9 @@ export const universalVars = writable({
     password: "",
     confirmPassword: "",
 
+    description: "",
+    maximumVote: 0,
+
     activeItem: "Dashboard",
 
 })
