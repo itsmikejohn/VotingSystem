@@ -87,7 +87,7 @@
     }
 </script>
 
-<main class="p-4" in:fly={{x:-200, duration:600}}>
+<main class="p-4 sm:max-w-7xl mx-auto" in:fly={{x:-200, duration:600}}>
     <p class="text-2xl font-semibold py-4">Voters List</p>
     <div class="">
         <div class="border-t-4 border-2 p-2">
@@ -138,15 +138,19 @@
             
             <div class="flex flex-col gap-2">
                 {#each $userStates.addedVotersArray as val, index}
-                    <div class="flex gap-2 items-center">
+                    <div class="flex flex-col gap-2 bg-slate-300 p-4 rounded-lg sm:flex-row sm:items-center sm:p-0 sm:justify-center">
                         <p class=" px-2 bg-slate-200 font-semibold">Fullname</p>
-                        <p>{val.fullname}</p>
+                        <p class="sm:w-[40%]">{val.fullname}</p>
+
                         <p class=" px-2 bg-slate-200 font-semibold">Gender</p>
-                        <p>{val.gender}</p>
+                        <p class="sm:w-[5%]">{val.gender}</p>
+
                         <p class=" px-2 bg-slate-200 font-semibold">Photo</p>
                         <img src={val.photoURL} alt="loading" class="w-10"/>
-                        <p class=" px-2 bg-slate-200 font-semibold">Voters ID</p>
-                        <p>{val.generatedUID}</p>
+
+                        <p class="px-2  bg-slate-200 font-semibold">Voters ID</p>
+                        <p class="sm:w-[7%]">{val.generatedUID}</p>
+
                         <p class=" px-2 bg-slate-200 font-semibold">Tools</p>
                         <div class="flex gap-2">
                             <button class="bg-green-600 px-2 text-white font-semibold hover:bg-green-800"
