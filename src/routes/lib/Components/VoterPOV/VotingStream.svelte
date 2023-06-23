@@ -37,6 +37,16 @@
     
 </script>
 
+<div class="">
+    {#each sampleDB_array as val}
+                             <!--How i can make this dynamic or something like it its name changes as the loop count :3? -->
+        <input type="radio" value={val} name="sampleGroup" bind:group={radioStore} />
+    {/each}
+</div>
+
+
+
+
 <main class="p-2 mx-auto sm:max-w-2xl ">
     <div class="border-2 border-black shadow-lg shadow-black">
         <p class="border-b-2 p-2 font-semibold border-black">Running President</p>
@@ -80,11 +90,7 @@
                     >View Platform</button>
                 </div>
 
-                <div class="">
-                    {#each sampleDB_array as val}
-                        <input type="radio" value={val} name="sampleGroup" bind:group={radioStore} />
-                    {/each}
-                </div>
+                
             </div>
         {/each}
         {/each}
