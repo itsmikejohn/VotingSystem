@@ -5,7 +5,7 @@
 
     //database calls and hooks
     import { auth, db } from "../../DB/firebase";
-    import { collection, onSnapshot, query, orderBy } from "firebase/firestore";
+    import { collection, onSnapshot, query, orderBy, addDoc } from "firebase/firestore";
 
     //fetch positions
     onSnapshot(collection(db, "addedPositions"), snapshots => {
@@ -29,33 +29,31 @@
         $userStates.fetchCandidateStreamArray = fbData;
     })
     
-    //my problem is here
-    let sampleDB_array = ["DataOne", "DataTwo", "DataThree", "DataFour", "DataFice"];
+   
     
-    //i want to make this independent along the DOM loop but how?
-    let radioStore = "";
+    const grab = (position, fullname) => {
+        if(document.getElementById(fullname).checked){
+            console.log(fullname)
+        }
+    }
+
     
+    
+
 </script>
-
-<div class="">
-    {#each sampleDB_array as val}
-                             <!--How i can make this dynamic or something like it its name changes as the loop count :3? -->
-        <input type="radio" value={val} name="sampleGroup" bind:group={radioStore} />
-    {/each}
-</div>
-
-
-
-
+<form on:submit={grab}>
 <main class="p-2 mx-auto sm:max-w-2xl ">
-    <div class="border-2 border-black shadow-lg shadow-black">
-        <p class="border-b-2 p-2 font-semibold border-black">Running President</p>
+    <button>Submit</button>
+    {#each $userStates.fetchPositionStreamArray as outerVal, outerIndex}
+    <div class="border-2 border-black mt-2">
+        <p class="border-b-2 p-2 font-semibold border-black">Running {outerVal.description}</p>
         <div class="">
             <p class="p-2 italic text-red-500">You may select up to 200 candidates</p>
             
         </div>
-        {#each $userStates.fetchPositionStreamArray as outerVal, outerIndex}
+        
         {#each $userStates.fetchCandidateStreamArray as val, innerIndex}
+            {#if val.position === outerVal.description}
             <div class="p-2 flex gap-2 items-center border-2 m-2 rounded-lg">
                 <img src={val.photoURL} alt="loading" class="w-10 rounded-full bg-slate-600" />
                 <div class="w-full">
@@ -90,10 +88,16 @@
                     >View Platform</button>
                 </div>
 
+                <div class="">
+                    <input type="radio" id={val.fullname} name={val.position} value={val.fullname} />
+                </div>
                 
             </div>
-        {/each}
+            {/if}
         {/each}
         
+        
     </div>
+    {/each}
 </main>
+</form>
