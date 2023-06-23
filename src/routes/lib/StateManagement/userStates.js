@@ -9,6 +9,16 @@ export const userStates = writable({
     showEditPosition: false,
     comparisonPos: 0.1,
 
+    showNewCandidate: false,
+    showEditCandidate: false,
+    comparisonCandidate: 0.1,
+    platformComparison: 0.1,
+
     addedVotersArray: [],
     addedPositionsArray: [],
+    fetchPositionArray: [],
+    addedCandidatesArray: [],
+
+
+    
 })

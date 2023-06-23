@@ -4,6 +4,7 @@
     import { universalVars } from "../../StateManagement/staticStates";
     import Voters from "./Manage/Voters.svelte";
     import Positions from "./Manage/Positions.svelte";
+    import Candidates from "./Manage/Candidates.svelte";
 
 
 </script>
@@ -29,7 +30,7 @@
         </div>
     {:else if $universalVars.activeItem === "Candidates"}
         <div class="mt-20">
-            Candidates
+            <Candidates />
         </div>
     {/if}
 

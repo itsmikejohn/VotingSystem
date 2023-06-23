@@ -18,7 +18,6 @@
             fbData = [data, ...fbData];
         })
         $userStates.addedPositionsArray = fbData;
-        console.log($userStates.addedPositionsArray)
     })
 
     //add new position to DB

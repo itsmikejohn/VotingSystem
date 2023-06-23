@@ -18,6 +18,10 @@ export const universalVars = writable({
     description: "",
     maximumVote: 0,
 
+    position: "",
+    platform: "",
+    positionArray: [],
+
     activeItem: "Dashboard",
 
 })
