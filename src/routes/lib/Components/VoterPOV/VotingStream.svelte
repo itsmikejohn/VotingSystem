@@ -29,7 +29,11 @@
         $userStates.fetchCandidateStreamArray = fbData;
     })
     
+    //my problem is here
+    let sampleDB_array = ["DataOne", "DataTwo", "DataThree", "DataFour", "DataFice"];
     
+    //i want to make this independent along the DOM loop but how?
+    let radioStore = "";
     
 </script>
 
@@ -77,7 +81,9 @@
                 </div>
 
                 <div class="">
-                    
+                    {#each sampleDB_array as val}
+                        <input type="radio" value={val} name="sampleGroup" bind:group={radioStore} />
+                    {/each}
                 </div>
             </div>
         {/each}
