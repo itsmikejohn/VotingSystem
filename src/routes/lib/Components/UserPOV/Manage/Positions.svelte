@@ -109,8 +109,8 @@
                 </div>
 
                 {#if $userStates.comparisonPos === index}
-                    <div class="fixed top-0 bottom-0 left-0 right-0 p-4" in:scale>
-                        <div class="border-2 mx-auto max-w-2xl mt-[15vh] p-4 z-10 rounded-lg bg-orange-400">
+                    <div class="fixed top-0 bottom-0 left-0 right-0 p-4" transition:scale>
+                        <div class="border-2 mx-auto max-w-2xl mt-[15vh] p-4 z-10 rounded-lg bg-green-400">
                             <p class="text-white font-semibold">Update target: <i class="text-black">{val.description}</i></p>
                             
                             <OurInputs LABEL="Description:" PLACEHOLDER="Description example.. President" bind:this={$universalVars.description}/>
