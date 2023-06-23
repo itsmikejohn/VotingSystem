@@ -19,6 +19,9 @@ export const userStates = writable({
     fetchPositionArray: [],
     addedCandidatesArray: [],
 
+    fetchCandidateStreamArray: [],
+    fetchPositionStreamArray: [],
+
 
     
 })

@@ -63,7 +63,7 @@
                             <p class="text-white font-semibold">Add New Position</p>
                             
                             <OurInputs LABEL="Description:" PLACEHOLDER="Description example.. President" bind:this={$universalVars.description}/>
-                            <OurInputs TYPE="number" LABEL="Maximum Votes:" PLACEHOLDER="Enter a valid number of votes" bind:this={$universalVars.maximumVote}/>
+                            <OurInputs TYPE="number" LABEL="Maximum Votes:" PLACEHOLDER="Enter a valid number of votes for each candidate" bind:this={$universalVars.maximumVote}/>
                             
                             <div class="flex mt-4 border-t-2 pt-2">
                                 <div class="w-full">
@@ -114,7 +114,7 @@
                             <p class="text-white font-semibold">Update target: <i class="text-black">{val.description}</i></p>
                             
                             <OurInputs LABEL="Description:" PLACEHOLDER="Description example.. President" bind:this={$universalVars.description}/>
-                            <OurInputs TYPE="number" LABEL="Maximum Votes:" PLACEHOLDER="Enter a valid number of votes" bind:this={$universalVars.maximumVote}/>
+                            <OurInputs TYPE="number" LABEL="Maximum Votes:" PLACEHOLDER="Enter a valid number of votes for each candidate" bind:this={$universalVars.maximumVote}/>
                             
                             <div class="flex mt-4 border-t-2 pt-2">
                                 <div class="w-full">

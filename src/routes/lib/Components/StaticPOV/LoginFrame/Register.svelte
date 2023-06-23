@@ -11,55 +11,65 @@
     import { auth,db } from "../../../DB/firebase";
     import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
     import { collection, doc, serverTimestamp, setDoc } from "firebase/firestore";
-    import { onMount } from "svelte";
-
-    onMount(() => $universalVars.gender = "");
+    
 
     const thisCompoVars = {
         dbDomReader: "",
+        photoURL: "",
     }
 
     const signUp = () => {
-        $logicGates.showLoading = true;
-        createUserWithEmailAndPassword(auth, $universalVars.email.BINDTHIS, $universalVars.password.BINDTHIS)
-        .then(userCred => {
-            
-            if($universalVars.gender === "Male"){
-                updateProfile(userCred.user, {
-                    displayName: $universalVars.username,
-                    photoURL: "https://em-content.zobj.net/thumbs/120/facebook/65/man_1f468.png"
-                })
-            }else if($universalVars.gender === "Female"){
-                updateProfile(userCred.user, {
-                    displayName: $universalVars.username,
-                    photoURL: "https://em-content.zobj.net/thumbs/120/facebook/65/woman_1f469.png",
-                })
-            }else{
-                updateProfile(userCred.user, {
-                    displayName: $universalVars.username,
-                    photoURL: "https://em-content.zobj.net/thumbs/120/facebook/65/woman_1f469.png",
-                })
-            }
 
-            setDoc(doc(collection(db, "registeredVoters"), userCred.user.uid), {
-                gender: $universalVars.gender,
-                username: $universalVars.username.BINDTHIS,
-                email: $universalVars.email.BINDTHIS,
-                password: $universalVars.password.BINDTHIS,
-                createdAt: serverTimestamp(),
-            }, {merge:true})
-            .then(() => {
-                $logicGates.showLoading = false;
+        const callMe = () => {
+            createUserWithEmailAndPassword(auth, $universalVars.email.BINDTHIS, $universalVars.password.BINDTHIS)
+            .then( async userCred => {
+                
+                await updateProfile(userCred.user, {
+                    displayName: $universalVars.username.BINDTHIS,
+                    photoURL: thisCompoVars.photoURL,
+                })
+
+                await setDoc(doc(collection(db, "registeredVoters"), userCred.user.uid), {
+                    votersID: userCred.user.uid,
+                    voterPhoto: userCred.user.photoURL,
+                    gender: $universalVars.gender,
+                    fullname: userCred.user.displayName,
+                    email: userCred.user.email,
+                    password: $universalVars.password.BINDTHIS,
+                    createdAt: serverTimestamp(),
+
+                }, {merge:true})
+                .then(() => {
+                    $logicGates.showLoading = false;
+                })
+                .catch(error => {
+                    thisCompoVars.dbDomReader = error.code;
+                    $logicGates.showLoading = false;
+                })
             })
             .catch(error => {
                 thisCompoVars.dbDomReader = error.code;
                 $logicGates.showLoading = false;
             })
-        })
-        .catch(error => {
-            thisCompoVars.dbDomReader = error.code;
+        }
+
+        $logicGates.showLoading = true;
+
+        if($universalVars.gender === "Male"){
+            thisCompoVars.photoURL = "https://em-content.zobj.net/thumbs/120/facebook/65/man_1f468.png";
+            callMe();  
+            $logicGates.showLoading = false; 
+        }else if($universalVars.gender === "Female"){
+            thisCompoVars.photoURL = "https://em-content.zobj.net/thumbs/120/facebook/65/woman_1f469.png";
+            callMe();
             $logicGates.showLoading = false;
-        })
+        }else{
+            thisCompoVars.dbDomReader = "Select Gender First";
+        }
+
+        $logicGates.showLoading = false;
+        
+        
     }
 
 </script>
@@ -72,7 +82,7 @@
         <p class="text-2xl text-center font-bold">Voter's Registration</p>
         <div class="mt-5">
             <OurAccordion />
-            <OurInputs LABEL="Username:" PLACEHOLDER="Username" bind:this={$universalVars.username}/>
+            <OurInputs LABEL="Fullname:" PLACEHOLDER="Fullname" bind:this={$universalVars.username}/>
             <OurInputs TYPE="email" LABEL="Email:" PLACEHOLDER="Voters Email" bind:this={$universalVars.email}/>
             <OurInputs TYPE="password" LABEL="Password:" PLACEHOLDER="Voter's Password" bind:this={$universalVars.password}/>
             <OurInputs TYPE="password" LABEL="Confirm Password:" PLACEHOLDER="Confirm Voter's Password" bind:this={$universalVars.confirmPassword}/>

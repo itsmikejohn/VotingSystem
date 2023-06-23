@@ -5,6 +5,10 @@ export const logicGates = writable({
     showResetPassword: false,
 
     showLoading: false,
+
+    hasAdmin: false,
+    hasVoter: false,
+    
     
 })
 

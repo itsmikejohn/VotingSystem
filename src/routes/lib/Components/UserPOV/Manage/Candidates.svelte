@@ -12,7 +12,13 @@
     //database calls and hooks
     import { auth, db } from "../../../DB/firebase";
     import {collection, onSnapshot, addDoc, serverTimestamp, setDoc, doc, query, orderBy, deleteDoc} from "firebase/firestore";
+    import OurAccordion from "../../../GeneralComponents/OurAccordion.svelte";
     
+    const thisCompoVars = {
+        photoURL: ""
+    }
+
+
     // hook snapshots of of position->description from DB to connect it to candidates
     onSnapshot(collection(db, "addedPositions"), snapshots => {
         let fbData = [];
@@ -38,15 +44,31 @@
 
     //add candidate to DB
     const addNewCandidate = () => {
-        addDoc(collection(db, "addedCandidates"), {
+        const callMe = () => {
+            addDoc(collection(db, "addedCandidates"), {
             createdAt: serverTimestamp(),
-            position: $universalVars.position,
-            fullname: $universalVars.fullname.BINDTHIS,
-            platform: $universalVars.platform,
-        }).then(() => {
-            $userStates.showNewCandidate = false;
-            $universalVars.platform = "";
-        })
+                gender: $universalVars.gender,
+                position: $universalVars.position,
+                fullname: $universalVars.fullname.BINDTHIS,
+                platform: $universalVars.platform,
+                photoURL: thisCompoVars.photoURL,
+            }).then(() => {
+                $userStates.showNewCandidate = false;
+                $universalVars.platform = "";
+            })
+        }
+
+        if($universalVars.gender === "Male"){
+            thisCompoVars.photoURL = "https://em-content.zobj.net/thumbs/120/facebook/65/man_1f468.png";
+            callMe();   
+        }else if($universalVars.gender === "Female"){
+            thisCompoVars.photoURL = "https://em-content.zobj.net/thumbs/120/facebook/65/woman_1f469.png";
+            callMe();
+        }else{
+            console.log("Form validation otw")
+        }
+
+        
     }
 
     //edit candidate to DB
@@ -54,6 +76,7 @@
 
         setDoc(doc(collection(db, "addedCandidates"), refID), {
             position: $universalVars.position,
+            gender: $universalVars.gender,
             fullname: $universalVars.fullname.BINDTHIS,
             platform: $universalVars.platform,
             modedAt: serverTimestamp(),
@@ -85,9 +108,14 @@
                 {#if $userStates.showNewCandidate}
                     <div class="fixed top-0 bottom-0 left-0 right-0 p-4" in:scale>
                         <div class="border-2 mx-auto max-w-2xl mt-[15vh] p-4 z-10 rounded-lg bg-slate-400">
-                            <p class="text-white font-semibold">Add New Position</p>
+                            <p class="text-white font-semibold">Add New Candidate</p>
+
                             <div class="my-2">
                                 <SpecialAccordion TITLE="Select Position" ARRAY_DATA={$userStates.fetchPositionArray}/>
+                            </div>
+
+                            <div class="my-2">
+                                <OurAccordion />
                             </div>
 
                             <OurInputs LABEL="Fullname:" PLACEHOLDER="Fullname of candidate" bind:this={$universalVars.fullname}/>
@@ -176,6 +204,10 @@
                             <p class="text-white font-semibold">Update target: <i class="text-black">{val.fullname}</i></p>
                             <div class="my-2">
                                 <SpecialAccordion TITLE="Select Position" ARRAY_DATA={$userStates.fetchPositionArray}/>
+                            </div>
+
+                            <div class="my-2">
+                                <OurAccordion />
                             </div>
 
                             <OurInputs LABEL="Fullname:" PLACEHOLDER="Fullname of candidate" bind:this={$universalVars.fullname}/>

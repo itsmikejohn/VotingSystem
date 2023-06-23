@@ -13,15 +13,15 @@
 
 <main class="mx-auto sm:max-w-2xl mt-[10vh] px-5">
 
-    {#if false}
-        {#if $logicGates.showRegisterComp}
-            <Register />
-        {:else if $logicGates.showResetPassword}
-            <ResetPassword />
-        {:else}
-            <Login />
-        {/if}
+
+    {#if $logicGates.showRegisterComp}
+        <Register />
+    {:else if $logicGates.showResetPassword}
+        <ResetPassword />
+    {:else}
+        <Login />
     {/if}
+    
 
     
 </main>

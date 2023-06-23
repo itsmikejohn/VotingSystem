@@ -10,9 +10,11 @@
 
     //database calls and hooks
     import { auth, db } from "../../../DB/firebase";
-    import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+    import { createUserWithEmailAndPassword, updateProfile, deleteUser, getAuth } from "firebase/auth";
     import { doc, collection, setDoc, serverTimestamp, onSnapshot, addDoc, deleteDoc, query, orderBy} from "firebase/firestore"
 
+    
+    
     
     
     onSnapshot(query(collection(db, "addedVoters"), orderBy("createdAt", "asc")), snapshots => {
@@ -67,6 +69,8 @@
             createdAt: serverTimestamp(),
         }).then(() => $userStates.showNewVoter = false)
     }
+
+    
 
 
     const newVoter = () => {
